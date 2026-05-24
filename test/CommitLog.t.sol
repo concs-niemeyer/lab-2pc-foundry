@@ -15,16 +15,12 @@ contract CommitLogTest is Test {
     function testRecordDecision() public {
         string memory txId = "tx-123";
         uint256 amount = 100;
-        
+
         vm.prank(coordinator);
         commitLog.recordDecision(txId, CommitLog.Decision.COMMIT, amount);
 
-        (
-            CommitLog.Decision decision,
-            uint256 timestamp,
-            address recordedCoordinator,
-            uint256 recordedAmount
-        ) = commitLog.getDecision(txId);
+        (CommitLog.Decision decision, uint256 timestamp, address recordedCoordinator, uint256 recordedAmount) =
+            commitLog.getDecision(txId);
 
         assertEq(uint8(decision), uint8(CommitLog.Decision.COMMIT));
         assertEq(timestamp, block.timestamp);
@@ -35,16 +31,11 @@ contract CommitLogTest is Test {
     function testRecordAbort() public {
         string memory txId = "tx-456";
         uint256 amount = 200;
-        
+
         vm.prank(coordinator);
         commitLog.recordDecision(txId, CommitLog.Decision.ABORT, amount);
 
-        (
-            CommitLog.Decision decision,
-            ,
-            ,
-            uint256 recordedAmount
-        ) = commitLog.getDecision(txId);
+        (CommitLog.Decision decision,,, uint256 recordedAmount) = commitLog.getDecision(txId);
 
         assertEq(uint8(decision), uint8(CommitLog.Decision.ABORT));
         assertEq(recordedAmount, amount);
@@ -52,16 +43,16 @@ contract CommitLogTest is Test {
 
     function testCannotRecordTwice() public {
         string memory txId = "tx-789";
-        
+
         commitLog.recordDecision(txId, CommitLog.Decision.COMMIT, 100);
-        
+
         vm.expectRevert("Decision already recorded");
         commitLog.recordDecision(txId, CommitLog.Decision.ABORT, 200);
     }
 
     function testCannotRecordInvalidDecision() public {
         string memory txId = "tx-000";
-        
+
         vm.expectRevert("Invalid decision");
         commitLog.recordDecision(txId, CommitLog.Decision.UNKNOWN, 100);
     }

@@ -7,9 +7,7 @@ import "forge-std/Script.sol";
 import "../src/CommitLog.sol";
 
 contract DeployCommitLog is Script {
-
     function run() external returns (CommitLog) {
-
         vm.startBroadcast();
 
         CommitLog commitLog = new CommitLog();
@@ -17,7 +15,5 @@ contract DeployCommitLog is Script {
         vm.stopBroadcast();
 
         return commitLog;
-
     }
-
 }

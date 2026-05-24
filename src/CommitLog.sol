@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 contract CommitLog {
-
     enum Decision {
 
         UNKNOWN,
@@ -11,7 +10,6 @@ contract CommitLog {
         COMMIT,
 
         ABORT
-
     }
 
     struct TransactionRecord {
@@ -25,26 +23,12 @@ contract CommitLog {
     mapping(string => TransactionRecord) public records;
 
     event DecisionRecorded(
-        string transactionId,
-        Decision decision,
-        uint256 timestamp,
-        address coordinator,
-        uint256 value
+        string transactionId, Decision decision, uint256 timestamp, address coordinator, uint256 value
     );
 
-    function recordDecision(
-        string memory transactionId,
-        Decision decision,
-        uint256 value
-    ) public {
-        require(
-            records[transactionId].decision == Decision.UNKNOWN,
-            "Decision already recorded"
-        );
-        require(
-            decision == Decision.COMMIT || decision == Decision.ABORT,
-            "Invalid decision"
-        );
+    function recordDecision(string memory transactionId, Decision decision, uint256 value) public {
+        require(records[transactionId].decision == Decision.UNKNOWN, "Decision already recorded");
+        require(decision == Decision.COMMIT || decision == Decision.ABORT, "Invalid decision");
 
         records[transactionId] = TransactionRecord({
             transactionId: transactionId,
@@ -54,34 +38,15 @@ contract CommitLog {
             value: value
         });
 
-        emit DecisionRecorded(
-            transactionId,
-            decision,
-            block.timestamp,
-            msg.sender,
-            value
-        );
+        emit DecisionRecorded(transactionId, decision, block.timestamp, msg.sender, value);
     }
 
-    function getDecision(
-        string memory transactionId
-    )
+    function getDecision(string memory transactionId)
         public
         view
-        returns (
-            Decision decision,
-            uint256 timestamp,
-            address coordinator,
-            uint256 value
-        )
+        returns (Decision decision, uint256 timestamp, address coordinator, uint256 value)
     {
         TransactionRecord storage record = records[transactionId];
-        return (
-            record.decision,
-            record.timestamp,
-            record.coordinator,
-            record.value
-        );
+        return (record.decision, record.timestamp, record.coordinator, record.value);
     }
-
 }
