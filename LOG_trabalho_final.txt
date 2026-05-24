@@ -1,0 +1,61 @@
+$ forge script script/DeployCommitLog.s.sol --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast
+
+[⠊] Compiling...
+No files changed, compilation skipped
+Script ran successfully.
+
+== Return ==
+0: contract CommitLog 0x586366BaEc8B142F2144b09D2213FB5dbe3705d8
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 2.062061612 gwei
+
+Estimated total gas used for script: 612547
+
+Estimated amount required: 0.001263109654245764 ETH
+
+==========================
+
+##### sepolia
+✅  [Success] Hash: 0x809ca3f630c2a4fbd0ae1b3d95cef2726ca2d43e89dddcffa78ffe91c2e7690c
+Contract: CommitLog
+Contract Address: 0x586366BaEc8B142F2144b09D2213FB5dbe3705d8
+Block: 10914662
+Paid: 0.00051972938764811 ETH (471190 gas * 1.103014469 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.00051972938764811 ETH (471190 gas * avg 1.103014469 gwei)
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /lab-2pc-foundry/broadcast/DeployCommitLog.s.sol/11155111/run-latest.json
+
+Sensitive values saved to: /lab-2pc-foundry/cache/DeployCommitLog.s.sol/11155111/run-latest.json
+
+-------------------------------------------
+
+◇ injected env (3) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+
+Iniciando transação tx-1779659704946
+Transferência: Banco A -> Banco B | Valor: 50
+[Coordenador] Voto de Banco A: YES
+[Coordenador] Voto de Banco B: YES
+[Coordenador] Decisão final: COMMIT
+[Coordenador] Registrando decisão na Sepolia...
+[Coordenador] Decisão registrada na blockchain.
+Hash da transação: 0xf93c80c4fd87d678b873875d2b9b1d9e4a692594ee8abd84abc59afa401985b8
+
+-----------------------------------------------
+
+$ cast call --rpc-url $SEPOLIA_RPC_URL $CONTRACT_ADDRESS "getDecision(string)" "tx-1779659704946" | xargs cast decode-abi "getDecision(string)(uint8,uint256,address,uint256)"
+1
+1779659712 [1.779e9]
+0x4c6fB514372781d0D42D8b29FB4bB65FF3964151
+50
